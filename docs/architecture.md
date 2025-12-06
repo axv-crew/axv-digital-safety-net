@@ -7,14 +7,16 @@ It is conceptual and intended for discussion and refinement.
 
 ## 1. High-Level Flow
 
+```md
 ```mermaid
 flowchart LR
-    U[User] -->|Converses| AI[AI Assistant<br/>(Sentinel Mode)]
-    AI --> RDE[Risk Detection Engine<br/>(RDE)]
+    U[User] -->|Converses| AI[AI Assistant (Sentinel Mode)]
+    AI --> RDE[Risk Detection Engine (RDE)]
     RDE -->|Risk Score + Patterns| DEC{Meets Crisis Threshold?}
-    DEC -->|No| END[No Notification<br/>(Standard Support Only)]
+    DEC -->|No| END[No Notification / Standard Support]
     DEC -->|Yes & Opt-In Active| NOTIF[Notification Module]
-    NOTIF --> C[Trusted Contact<br/>(Family / Friend / Therapist)]
+    NOTIF --> C[Trusted Contact (Family / Friend / Therapist)]
+
 ```
 
 **Key idea:**  
@@ -63,14 +65,14 @@ Only when the user has explicitly opted in *and* the risk is critical and sustai
 
 ## 3. Opt-In / Opt-Out Flow
 
+```md
 ```mermaid
 flowchart TD
     START[Start] --> Q1{Enable Digital Safety Net?}
-    Q1 -->|No| OUT1[Standard AI Mode<br/>(No DSN)]
+    Q1 -->|No| OUT1[Standard AI Mode (No DSN)]
     Q1 -->|Yes| CONTACTS[Select 1–3 Trusted Contacts]
-    CONTACTS --> RULES[Review & Accept DSN Rules]
+    CONTACTS --> RULES[Review and Accept DSN Rules]
     RULES --> ACTIVE[Digital Sentinel Mode Active]
-
     ACTIVE -->|User Disables DSN| OUT2[DSN Deactivated]
 ```
 
