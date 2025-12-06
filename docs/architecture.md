@@ -1,4 +1,4 @@
-# AXV Digital Safety Net — Architecture Overview (Fixed v0.2, No Edge Labels)
+# AXV Digital Safety Net — Architecture Overview (Safe Mermaid v0.2)
 
 This document outlines a **high-level architecture** for the AXV Digital Safety Net (DSN).  
 It is conceptual and intended for discussion and refinement.
@@ -9,20 +9,19 @@ It is conceptual and intended for discussion and refinement.
 
 ```mermaid
 flowchart LR
-    U[User] --> AI[AI Assistant (Sentinel Mode)]
-    AI --> RDE[Risk Detection Engine (RDE)]
-    RDE --> DEC{Meets Crisis Threshold?}
-    DEC --> END[No Notification / Standard Support]
-    DEC --> NOTIF[Notification Module]
-    NOTIF --> C[Trusted Contact (Family / Friend / Therapist)]
+    U[User] --> AI[AI Assistant - Sentinel Mode]
+    AI --> RDE[Risk Detection Engine]
+    RDE --> DEC{Crisis Threshold?}
+    DEC --> SAFE[No Notification - Standard Support]
+    DEC --> ALERT[Notification Module]
+    ALERT --> T[Trusted Contact]
 ```
 
-**Text fallback (GitHub Pages):**
+**Text fallback:**
 
-User → AI Assistant (Sentinel Mode)  
-AI → Risk Detection Engine  
-If threshold not met → No Notification / Standard Support  
-If threshold met and DSN is active → Notification Module → Trusted Contact  
+User → AI Assistant (Sentinel Mode) → Risk Detection Engine  
+If no crisis threshold → No notification / standard support  
+If crisis threshold and DSN active → Notification module → Trusted contact  
 
 ---
 
@@ -31,24 +30,20 @@ If threshold met and DSN is active → Notification Module → Trusted Contact
 ### 2.1 AI Assistant (Sentinel Mode)
 - Provides normal conversational assistance.  
 - Runs crisis-detection layers in parallel.  
-- Produces semantic signals:
-  - direct risk,
-  - indirect emotional risk,
-  - pattern risk over time.
+- Produces semantic signals about risk and emotional state.
 
 ### 2.2 Risk Detection Engine (RDE)
-Evaluates:
-- **HRD** — High-Risk Direct  
-- **MRI** — Medium-Risk Indirect  
-- **PRM** — Pattern Risk Modeling  
-
-Outputs a continuous **Risk Score (0–100)**.
+- Evaluates:
+  - high-risk direct statements,
+  - indirect risk signals,
+  - patterns over time.
+- Outputs a continuous **Risk Score (0–100)**.
 
 ### 2.3 Opt-In State
-Stores:
-- user opt-in,  
-- trusted contacts,  
-- preferences.  
+- Stores:
+  - user opt-in status,
+  - trusted contacts,
+  - preferences.
 
 ### 2.4 Notification Module
 - Sends minimal alerts.  
@@ -62,20 +57,20 @@ Stores:
 
 ```mermaid
 flowchart TD
-    START[Start] --> Q1{Enable Digital Safety Net?}
-    Q1 --> OUT1[Standard AI Mode (No DSN)]
-    Q1 --> CONTACTS[Select 1–3 Trusted Contacts]
-    CONTACTS --> RULES[Review and Accept DSN Rules]
-    RULES --> ACTIVE[Digital Sentinel Mode Active]
-    ACTIVE --> OUT2[DSN Deactivated]
+    START[Start] --> Q1{Enable Digital Safety Net}
+    Q1 --> NO[Standard AI Mode]
+    Q1 --> YES[Select Trusted Contacts]
+    YES --> RULES[Accept DSN Rules]
+    RULES --> ACTIVE[DSN Active]
+    ACTIVE --> OFF[DSN Deactivated]
 ```
 
-**Text fallback (GitHub Pages):**
+**Text fallback:**
 
-Start → decision “Enable DSN?”  
-→ Standard AI Mode (if not enabled)  
-→ or: Select contacts → Accept rules → DSN active  
-→ DSN can be deactivated at any time.  
+Start → decision "Enable Digital Safety Net"  
+- If no → Standard AI mode  
+- If yes → Select contacts → Accept rules → DSN active  
+User can deactivate DSN at any time.  
 
 ---
 
@@ -83,29 +78,29 @@ Start → decision “Enable DSN?”
 
 ```mermaid
 flowchart TD
-    A[New Message] --> B[AI + Safety Analysis]
+    A[New Message] --> B[Safety Analysis]
     B --> C[Update Risk Score]
-    C --> D{Score ≥ Threshold?}
-    D --> E[Continue Normal Support]
-    D --> F[Sustained Over Time?]
-    F --> G[Opt-In Active?]
-    G --> H[Trigger Notification]
-    H --> I[Contact Trusted Person]
+    C --> D{Score Above Threshold}
+    D --> SAFE2[Normal Support]
+    D --> CHECK[Check Pattern Over Time]
+    CHECK --> OPTIN[Check Opt-In]
+    OPTIN --> ALERT2[Trigger Notification]
+    ALERT2 --> CONTACT[Trusted Person]
 ```
 
-**Text fallback (GitHub Pages):**
+**Text fallback:**
 
-New message → Safety analysis → Risk score  
-If below threshold → no escalation  
-If above threshold and sustained and opt-in active → notify trusted contact  
+New message → Safety analysis → Risk score update  
+If below threshold → normal support  
+If above threshold and pattern sustained and user opted-in → notification to trusted person  
 
 ---
 
-## 5. Data & Privacy Principles
+## 5. Data and Privacy Principles
 
 - No conversation content stored or shared.  
-- Minimal notification template only.  
-- Opt-in fully reversible.  
+- Minimal notification text only.  
+- Opt-in is fully reversible.  
 - No automatic contact with emergency services.  
 
 ---
@@ -114,9 +109,9 @@ If above threshold and sustained and opt-in active → notify trusted contact
 
 - NGO integration  
 - On-device DSN  
-- Federated risk model  
+- Federated risk models  
 - UX flows for notifications  
-- Clinical review + PHQA testing  
+- Clinical review and PHQA testing  
 
 ---
 
