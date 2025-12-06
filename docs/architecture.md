@@ -1,4 +1,4 @@
-# AXV Digital Safety Net — Architecture Overview (Fixed v0.2)
+# AXV Digital Safety Net — Architecture Overview (Fixed v0.2, No Edge Labels)
 
 This document outlines a **high-level architecture** for the AXV Digital Safety Net (DSN).  
 It is conceptual and intended for discussion and refinement.
@@ -9,11 +9,11 @@ It is conceptual and intended for discussion and refinement.
 
 ```mermaid
 flowchart LR
-    U[User] -->|Converses| AI[AI Assistant (Sentinel Mode)]
+    U[User] --> AI[AI Assistant (Sentinel Mode)]
     AI --> RDE[Risk Detection Engine (RDE)]
-    RDE -->|Risk Score + Patterns| DEC{Meets Crisis Threshold?}
-    DEC -->|No| END[No Notification / Standard Support]
-    DEC -->|Yes & Opt-In Active| NOTIF[Notification Module]
+    RDE --> DEC{Meets Crisis Threshold?}
+    DEC --> END[No Notification / Standard Support]
+    DEC --> NOTIF[Notification Module]
     NOTIF --> C[Trusted Contact (Family / Friend / Therapist)]
 ```
 
@@ -21,8 +21,8 @@ flowchart LR
 
 User → AI Assistant (Sentinel Mode)  
 AI → Risk Detection Engine  
-RDE → If risk below threshold → Standard support  
-RDE → If above threshold + opt-in active → Notify Trusted Contact  
+If threshold not met → No Notification / Standard Support  
+If threshold met and DSN is active → Notification Module → Trusted Contact  
 
 ---
 
@@ -63,19 +63,19 @@ Stores:
 ```mermaid
 flowchart TD
     START[Start] --> Q1{Enable Digital Safety Net?}
-    Q1 -->|No| OUT1[Standard AI Mode (No DSN)]
-    Q1 -->|Yes| CONTACTS[Select 1–3 Trusted Contacts]
+    Q1 --> OUT1[Standard AI Mode (No DSN)]
+    Q1 --> CONTACTS[Select 1–3 Trusted Contacts]
     CONTACTS --> RULES[Review and Accept DSN Rules]
     RULES --> ACTIVE[Digital Sentinel Mode Active]
-    ACTIVE -->|User Disables DSN| OUT2[DSN Deactivated]
+    ACTIVE --> OUT2[DSN Deactivated]
 ```
 
 **Text fallback (GitHub Pages):**
 
-Start → Enable DSN?  
-- No → Standard AI mode  
-- Yes → Select contacts → Accept rules → DSN active  
-Disable at any time → DSN deactivated  
+Start → decision “Enable DSN?”  
+→ Standard AI Mode (if not enabled)  
+→ or: Select contacts → Accept rules → DSN active  
+→ DSN can be deactivated at any time.  
 
 ---
 
@@ -86,21 +86,18 @@ flowchart TD
     A[New Message] --> B[AI + Safety Analysis]
     B --> C[Update Risk Score]
     C --> D{Score ≥ Threshold?}
-    D -->|No| E[Continue Normal Support]
-    D -->|Yes| F{Sustained Over Time?}
-    F -->|No| E
-    F -->|Yes| G{Opt-In Active?}
-    G -->|No| E
-    G -->|Yes| H[Trigger Notification]
+    D --> E[Continue Normal Support]
+    D --> F[Sustained Over Time?]
+    F --> G[Opt-In Active?]
+    G --> H[Trigger Notification]
     H --> I[Contact Trusted Person]
 ```
 
 **Text fallback (GitHub Pages):**
 
-New message → Safety analysis → Risk score updated  
-If score < threshold → no escalation  
-If score ≥ threshold but not sustained → no escalation  
-If sustained + opt-in active → notify trusted contact  
+New message → Safety analysis → Risk score  
+If below threshold → no escalation  
+If above threshold and sustained and opt-in active → notify trusted contact  
 
 ---
 
