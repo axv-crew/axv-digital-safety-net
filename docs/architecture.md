@@ -65,7 +65,7 @@ Only when the user has explicitly opted in *and* the risk is critical and sustai
 
 ## 3. Opt-In / Opt-Out Flow
 
-```md
+
 ```mermaid
 flowchart TD
     START[Start] --> Q1{Enable Digital Safety Net?}
